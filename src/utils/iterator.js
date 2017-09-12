@@ -10,9 +10,6 @@ function createIterator(arr) {
   let current = null;
 
   return {
-    all() {
-      return [current, ...array];
-    },
     next() {
       const headEl = head(array);
       const restEl = tail(array);
@@ -26,6 +23,12 @@ function createIterator(arr) {
       array = current ? [current, ...restEl] : restEl;
       current = lastEl;
       return lastEl;
+    },
+    all() {
+      return [current, ...array];
+    },
+    current() {
+      return current;
     },
     add(el) {
       array = append(el, array);

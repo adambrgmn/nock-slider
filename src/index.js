@@ -21,10 +21,10 @@ async function simpleSlider(
   {
     btnPrevious,
     btnNext,
+    transitionDuration = 0,
     onSlideStart,
     onSlideEnd,
     onSlideError,
-    transitionDuration = 500,
   } = {},
 ) {
   const innerContainer = createInnerContainer(slideContainer);
@@ -57,6 +57,8 @@ async function simpleSlider(
 
   return {
     addImage: src => images.add(src),
+    currentImage: () => images.current(),
+    removeImage: src => images.remove(src),
     previous: transition(false),
     next: transition(true),
   };
