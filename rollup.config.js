@@ -8,18 +8,18 @@ import pkg from './package.json';
 const isProd = process.env.BUNDLE_PROD;
 const isEsbundle = process.env.BUNDLE_ES;
 
-const name = 'simpleSlider';
+const name = 'nockSlider';
 let output;
 
 if (isProd) {
   console.log('Creating production UMD bundle...');
-  output = { file: 'dist/simple-slider.min.js', format: 'umd', name };
+  output = { file: `dist/${pkg.name}.min.js`, format: 'umd', name };
 } else if (isEsbundle) {
   console.log('Creating ES modules bundle...');
-  output = { file: 'dist/simple-slider.es.js', format: 'es', name };
+  output = { file: `dist/${pkg.name}.es.js`, format: 'es', name };
 } else {
   console.log('Creating development UMD bundle...');
-  output = { file: 'dist/simple-slider.js', format: 'umd', name };
+  output = { file: `dist/${pkg.name}.js`, format: 'umd', name };
 }
 
 const plugins = [
