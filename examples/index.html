@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Simple Slider</title>
+
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      .container {
+        width: 33vw;
+        margin: 2rem auto;
+        padding: 1rem;
+        background-color: #eee;
+      }
+
+      .slideshow-img {
+        border: 10px solid black;
+      }
+
+      .img-enter {
+        border-color: green;
+      }
+
+      .img-leave {
+        border-color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Simple Slider</h1>
+
+    <div class="container">
+      <button type="button" class="slideshow-previous">Prev</button>
+      <button type="button" class="slideshow-next">Next</button>
+      <div class="slideshow"></div>
+    </div>
+
+    <script src="/simple-slider.js"></script>
+    <script type="text/javascript">
+      const images = [
+        'https://images.unsplash.com/uploads/14126758789351371c7ec/aa322c2d?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&s=36498af11150e1b51615ecd166277e0b',
+        'https://images.unsplash.com/photo-1477511865400-09143de8796e?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&s=7c1d0088d2ba8480d6ecc22878b8acef',
+        'https://images.unsplash.com/photo-1499875534998-ee456c5e5b0e?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&s=1a46bc98b43a336a33a2cb29341750c0',
+        'https://images.unsplash.com/photo-1500265170352-2ce1da4bab7d?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&s=2c27ff0914ca3e79823f9b1158e35a5a',
+        'https://images.unsplash.com/photo-1440744147460-3236ece72dcb?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&s=34a53965416d87b86c80973eeb2bc35d',
+      ];
+      const slide = document.querySelector('.slideshow');
+
+      const btnPrevious = document.querySelector('.slideshow-previous');
+      const btnNext = document.querySelector('.slideshow-next');
+
+      const onSlideStart = src => console.log(`Will transition to: ${src}`);
+      const onSlideEnd = src => console.log(`Transitioned to: ${src}`);
+      const onSlideError = src => console.error(`Error transitioning to: ${src}`);
+
+      (async () => {
+        const mySlide = await simpleSlider(slide, images, { btnPrevious, btnNext, onSlideStart, onSlideEnd, onSlideError });
+        mySlide.addImage('htps://static.pexels.com/photos/126407/pexels-photo-126407.jpeg');
+      })();
+    </script>
+  </body>
+</html>
