@@ -8,7 +8,7 @@ import pkg from './package.json';
 const isProd = process.env.BUNDLE_PROD;
 const isEsbundle = process.env.BUNDLE_ES;
 
-const name = 'SimpleSlider';
+const name = 'simpleSlider';
 let output;
 
 if (isProd) {
@@ -17,6 +17,9 @@ if (isProd) {
 } else if (isEsbundle) {
   console.log('Creating ES modules bundle...');
   output = { file: 'dist/simple-slider.es.js', format: 'es', name };
+} else {
+  console.log('Creating development UMD bundle...');
+  output = { file: 'dist/simple-slider.js', format: 'umd', name };
 }
 
 const plugins = [
@@ -36,7 +39,7 @@ const plugins = [
         'env',
         {
           modules: false,
-          targets: { browsers: isProd ? 'last 2 versions' : 'defaults' },
+          targets: { browsers: isProd ? 'last 2 versions' : 'last 1 Chrome versions' },
         },
       ],
     ],
