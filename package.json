@@ -11,7 +11,8 @@
   "scripts": {
     "prebuild": "rimraf dist/* && rimraf lib/*",
     "build": "npm run build:dist && npm run build:lib",
-    "build:dist": "rollup -c --environment BUNDLE_ES && rollup -c --environment BUNDLE_PROD",
+    "build:dist":
+      "rollup -c --environment BUNDLE_ES && rollup -c --environment BUNDLE_PROD",
     "build:lib": "babel --out-dir lib --ignore \"*.test.js\" src",
     "build:watch": "rollup -c --watch",
     "dev": "node examples/server.js",
@@ -39,11 +40,8 @@
     "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-uglify": "^2.0.1"
   },
-  "list-staged": {
-    "*.js": [
-      "prettier --single-quote --trailing-comma all --write",
-      "git add"
-    ],
+  "lint-staged": {
+    "*.js": ["prettier --single-quote --trailing-comma all --write", "git add"],
     "*.json": [
       "prettier --single-quote --trailing-comma all --write",
       "git add"

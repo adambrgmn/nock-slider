@@ -6,16 +6,17 @@ import createIterator from './utils/iterator';
 import memoize from './utils/memoize';
 import preloadImg from './utils/preloadImg';
 import createImageSlider from './utils/createImageSlider';
+import isProd from './utils/isProd';
 
 const loadImg = memoize(preloadImg);
 const createInnerContainer = parent => {
   const container = document.createElement('div');
-  container.classList.add('slideshow-innerContainer');
+  container.classList.add('nock-inner-container');
   parent.appendChild(container);
   return container;
 };
 
-async function simpleSlider(
+async function nockSlider(
   slideContainer,
   imgs = [],
   {
@@ -33,21 +34,19 @@ async function simpleSlider(
   const loadAndSlide = pipeP(loadImg, slideTo);
 
   const initialImageSrc = images.next();
-  let clearTransition = await loadAndSlide(initialImageSrc);
+  await loadAndSlide(initialImageSrc);
 
   const transition = next => async () => {
     const event = next ? 'next' : 'prev';
-    if (!isNil(clearTransition)) clearTransition();
-
     const nextImageSrc = images[event]();
-    if (isFunction(onSlideStart)) onSlideStart(nextImageSrc);
 
     try {
-      clearTransition = await loadAndSlide(nextImageSrc);
+      if (isFunction(onSlideStart)) onSlideStart(nextImageSrc);
+      await loadAndSlide(nextImageSrc);
       if (isFunction(onSlideEnd)) onSlideEnd(nextImageSrc);
-    } catch (errorSrc) {
-      images.remove(errorSrc);
-      if (isFunction(onSlideError)) onSlideError(errorSrc);
+    } catch (e) {
+      if (isFunction(onSlideError)) onSlideError(nextImageSrc);
+      images.remove(nextImageSrc);
       await transition(next)();
     }
   };
@@ -56,12 +55,13 @@ async function simpleSlider(
   btnNext && btnNext.addEventListener('click', transition(true));
 
   return {
-    addImage: src => images.add(src),
-    currentImage: () => images.current(),
-    removeImage: src => images.remove(src),
+    addImage: images.add,
+    removeImage: images.remove,
+    currentImage: images.current,
+    allImages: images.all,
     previous: transition(false),
     next: transition(true),
   };
 }
 
-export default simpleSlider;
+export default nockSlider;

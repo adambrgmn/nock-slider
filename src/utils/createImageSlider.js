@@ -1,31 +1,36 @@
+import filter from 'ramda/src/filter';
 import rafScheduler from 'raf-schd';
+import delay from './delay';
 
-function createImageSlider(parent, transitionDelay = 1000) {
-  return img => {
+const BASE_CLASS = 'nock-img';
+
+function createImageSlider(parent, transitionDelay = 0) {
+  return async img => {
     const existingImg = parent.firstChild;
+    const children = Array.from(parent.children);
+
+    if (transitionDelay === 0 && existingImg) existingImg.replaceWith(img);
 
     const enterImages = rafScheduler(() => {
-      if (existingImg) existingImg.classList.add('img-leave');
-      img.classList.add('img-enter');
+      children.forEach(child => {
+        child.classList.remove(`${BASE_CLASS}-enter`);
+        child.classList.add(`${BASE_CLASS}-leave`);
+      });
+
+      img.classList.add(`${BASE_CLASS}-enter`);
       parent.appendChild(img);
     });
 
     const leaveImages = rafScheduler(() => {
-      if (existingImg) {
-        existingImg.classList.remove('img-leave');
-        existingImg.remove();
-      }
-
-      img.classList.remove('img-enter');
+      children.forEach(child => {
+        child.classList.remove(`${BASE_CLASS}-leave`);
+        child.remove();
+      });
+      img.classList.remove(`${BASE_CLASS}-enter`);
     });
 
     enterImages();
-
-    const timeout = window.setTimeout(leaveImages, transitionDelay);
-    return () => {
-      window.clearTimeout(timeout);
-      leaveImages();
-    }
+    return delay(leaveImages, transitionDelay);
   };
 }
 

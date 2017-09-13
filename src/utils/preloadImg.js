@@ -1,12 +1,17 @@
-function preloadImg(src) {
-  const imgEl = document.createElement('img');
-  imgEl.setAttribute('src', src);
-  imgEl.classList.add('slideshow-img');
+async function preloadImg(src) {
+  try {
+    const res = await fetch(src);
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
 
-  return new Promise((resolve, reject) => {
-    imgEl.onload = () => resolve(imgEl);
-    imgEl.onerror = () => reject(src);
-  });
-};
+    const img = document.createElement('img');
+    img.setAttribute('src', blobUrl);
+    img.classList.add('nock-img');
+
+    return img;
+  } catch (e) {
+    throw src;
+  }
+}
 
 export default preloadImg;
