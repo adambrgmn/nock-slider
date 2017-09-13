@@ -7,14 +7,28 @@ import memoize from './utils/memoize';
 import preloadImg from './utils/preloadImg';
 import createImageSlider from './utils/createImageSlider';
 import isProd from './utils/isProd';
-import { createElement, appendChild } from './utils/dom';
-import { innerContainerClass } from './config';
+import { createElement, appendChild, addClass, removeClass } from './utils/dom';
+import { innerContainerClass, baseName } from './config';
 
 const loadImg = memoize(preloadImg);
 const createInnerContainer = parent => {
   const container = createElement('div', [innerContainerClass]);
   appendChild(parent, container);
   return container;
+};
+
+const createContainerState = container => {
+  const className = `${baseName}-loading`;
+  return {
+    isLoading: x => {
+      addClass(container, className);
+      return x;
+    },
+    isNotLoading: x => {
+      removeClass(container, className);
+      return x;
+    },
+  };
 };
 
 async function nockSlider(
@@ -30,9 +44,16 @@ async function nockSlider(
   } = {},
 ) {
   const innerContainer = createInnerContainer(slideContainer);
+  const containerState = createContainerState(slideContainer);
   const slideTo = createImageSlider(innerContainer, transitionDuration);
   const images = createIterator(imgs);
-  const loadAndSlide = pipeP(loadImg, slideTo);
+  const loadAndSlide = pipeP(
+    (...args) => Promise.resolve(...args),
+    containerState.isLoading,
+    loadImg,
+    containerState.isNotLoading,
+    slideTo,
+  );
 
   const initialImageSrc = images.next();
   await loadAndSlide(initialImageSrc);
@@ -47,6 +68,8 @@ async function nockSlider(
       if (isFunction(onSlideEnd)) onSlideEnd(nextImgEl);
     } catch (error) {
       if (isFunction(onSlideError)) onSlideError(error);
+      containerState.isNotLoading();
+
       images.remove(nextImageSrc);
       await transition(next)();
     }
