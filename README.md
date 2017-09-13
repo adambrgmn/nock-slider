@@ -129,11 +129,11 @@ nockSlider(sliderContainer: DOMElement, images: Array<string>, options?: Object)
 
 #### Arguments
 
-| Name              | Required           | Type                    | Example                                                                                  |
-|:------------------|:-------------------|:------------------------|:-----------------------------------------------------------------------------------------|
-| `sliderContainer` | :heavy_check_mark: | `DOMElement`            | `document.getElementById('slideshow')`                                                   |
-| `images`          | :heavy_check_mark: | `Array` of `image urls` | `['https://www.mysite.com/assets/img-1.jpg', 'https://www.mysite.com/assets/img-2.jpg']` |
-| `options`         |                    | `Object` (see below)    | -                                                                                        |
+| Name              | Required           | Type                    | Example                                      |
+|:------------------|:------------------:|:------------------------|:---------------------------------------------|
+| `sliderContainer` | :heavy_check_mark: | `DOMElement`            | `document.getElementById('slideshow')`       |
+| `images`          | :heavy_check_mark: | `Array` of `image urls` | `['/assets/img-1.jpg', '/assets/img-2.jpg']` |
+| `options`         |                    | `Object` (see below)    | -                                            |
 
 **Options:**
 
@@ -148,9 +148,11 @@ nockSlider(sliderContainer: DOMElement, images: Array<string>, options?: Object)
 
 **Events:**
 
-`onSlideStart`, `onSlideEnd` and `onSlideError` are fired, as you already might have guessed, when a slide starts, ends or errors (probably error loading an image). `onSlideStart` and `onSlideEnd` fires with the source of the image provided.
+`onSlideStart`, `onSlideEnd` and `onSlideError` are fired, as you already might have guessed, when a slide starts, ends or errors (probably error loading an image).
 
-If an image can't be loaded, `onSlideError` will be called with the source of the image provided. But **note** that it will also remove the image from the slider queue automatically and slide to the next or previous image in the queue.
+- `onSlideStart` fires with the source of the image provided as a string.
+- `onSlideEnd` fires with the newly placed image provided (useful to change the height of the container...)
+- `onSlideError` will be calle e.g. if an image can't be loaded, src of the image provided. But **note** that it will also remove the image from the slider queue automatically and slide to the next or previous image in the queue.
 
 ### `nockSlider`-instance
 
@@ -166,13 +168,14 @@ nockSlider(sliderContainer, images).then(instance => console.log(instance));
 
 The following methods are available on the "instance".
 
-| Method         | Description                                             | Arguments     | Returns  | Example                                                    |
-|:---------------|:--------------------------------------------------------|:--------------|:---------|:-----------------------------------------------------------|
-| `addImage`     | Will add a new image to the end of the queue            | `src: string` | `void`   | `mySlider.addImage('/newImage.jpg')`                       |
-| `currentImage` | Will get the src of the current image                   |               | `string` | `const currentImage = mySlider.currentImage()`             |
-| `removeImage`  | Will remove the images matching the provided src string | `src: string` | `void`   | `mySlider.removeImage('/newImage.jpg')`                    |
-| `previous`     | Move to the previous image in queue                     |               | `void`   | `btn.addEventListener('click', () => mySlider.previous())` |
-| `next`         | Move to the next image in queue                         |               | `void`   | `btn.addEventListener('click', () => mySlider.next())`     |
+| Method         | Description                                  | Arguments     | Returns   | Example                                                    |
+|:---------------|:---------------------------------------------|:--------------|:----------|:-----------------------------------------------------------|
+| `addImage`     | Will add a new image to the end of the queue | `src: string` | `void`    | `mySlider.addImage('/newImage.jpg')`                       |
+| `removeImage`  | Will remove the images matching the src      | `src: string` | `void`    | `mySlider.removeImage('/newImage.jpg')`                    |
+| `currentImage` | Will get the src of the current image        |               | `string`  | `const currentImage = mySlider.currentImage()`             |
+| `allImages`    | Will return all the srcs of images in queue  |               | `[strin]` | `const allImgs = mySlide.allImages()`                      |
+| `previous`     | Move to the previous image in queue          |               | `void`    | `btn.addEventListener('click', () => mySlider.previous())` |
+| `next`         | Move to the next image in queue              |               | `void`    | `btn.addEventListener('click', () => mySlider.next())`     |
 
 ## Styling
 
