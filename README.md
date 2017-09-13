@@ -194,7 +194,7 @@ Here follows snapshots of how the DOM looks during a transition:
 ```
 
 ```html
-2. Button pressed (this state last for as long as you have defined `options.transitionDuration`):
+2. Button pressed (this state last for as long as you have defined options.transitionDuration):
 
 <div id="slideshow">
   <div class="nock-inner-container">
