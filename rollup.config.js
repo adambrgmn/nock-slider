@@ -35,13 +35,7 @@ const plugins = [
   babel({
     babelrc: false,
     presets: [
-      [
-        'env',
-        {
-          modules: false,
-          targets: { browsers: isProd ? 'last 2 versions' : 'last 1 Chrome versions' },
-        },
-      ],
+      ['env', { modules: false, targets: { browsers: 'last 5 versions' } }],
     ],
     plugins: ['external-helpers'],
   }),
