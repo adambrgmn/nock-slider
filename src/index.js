@@ -43,10 +43,10 @@ async function nockSlider(
 
     try {
       if (isFunction(onSlideStart)) onSlideStart(nextImageSrc);
-      await loadAndSlide(nextImageSrc);
-      if (isFunction(onSlideEnd)) onSlideEnd(nextImageSrc);
-    } catch (e) {
-      if (isFunction(onSlideError)) onSlideError(nextImageSrc);
+      const nextImgEl = await loadAndSlide(nextImageSrc);
+      if (isFunction(onSlideEnd)) onSlideEnd(nextImgEl);
+    } catch (error) {
+      if (isFunction(onSlideError)) onSlideError(error);
       images.remove(nextImageSrc);
       await transition(next)();
     }
