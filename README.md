@@ -2,13 +2,17 @@
 
 > A very simple image slider
 
+`nock-slider` is a small image slideshow library with a very basic api. But hopefully the few methods and configurations available will make it powerfull enough.
+It's suited for simple image viewing on websitets that value a small footprint regarding javascript-size. `nock-slider` doesn't provide any form of styling at all, it just takes care of loading the enxt image before it gets placed in the DOM. But together with a few css-classes the slieshow is easily stylable.
+
 ## Installation
 
 With npm/yarn:
 
 ```bash
-$ npm install nock-slider
-$ yarn add nock-slider
+npm install nock-slider
+# or with yarn
+yarn add nock-slider
 ```
 
 Or via `<script>`-tag:
@@ -20,7 +24,7 @@ Or via `<script>`-tag:
 
 ## Usage
 
-`nock-slider` actually requires just two things - a DOM-element and an array of images. How you provide them is up to you. But a few options can also be provided. Below you’ll find a few examples.
+`nock-slider` actually requires just two things - a DOM-element and an array of images. How you provide them is up to you. A few options can also be provided. Below you’ll find a few examples.
 
 ### Basic setup
 
@@ -35,7 +39,7 @@ In `index.html`:
   <script src="https://unpkg.com/nock-slider/dist/nock-slider.min.js" type="text/javascript">
   <script type="text/javascript">
     var images = ['/image-1.jpg', '/image-2.jpg', '/image-3.jpg'];
-    var slideContainer = document.getElementById('slideContainer');
+    var slideContainer = document.getElementById('slideshow');
     var btnPrevious = document.getElementById('slide-prev');
     var btnNext = document.getElementById('slide-next');
 
@@ -87,10 +91,12 @@ init();
 
 This creates a slightly more advanced slider, even though the possibilities aren’t endless :smirk:.
 
+*Note that you probably need something like [Rollup](https://github.com/rollup/rollup) or [Webpack](https://github.com/webpack/webpack) paired with [Babel](https://github.com/babel/babel) to make this code run in most browsers.*
+
 Once a user clicks any of the buttons this will happen in sequence:
 
 1. `nockSlider` preloads the next or previous image (caching it in memory for next time) :arrow_down:
-2. The new image gets appended to the slider inner container (`.slideshow-innerContainer`) :arrow_down:
+2. The new image gets appended to the slider inner container (`.nock-inner-container`) :arrow_down:
 3. The new image gets the class `.img-enter`, the old image is still existing and gets the class `.img-leave` :arrow_down:
 4. 500 ms (note `opts.transitionDuration`) later the old image gets removed from from the DOM and :arrow_down:
 5. The `.img-enter`-class gets removed from the new image :checkered_flag:
@@ -106,34 +112,95 @@ This is the default, and only, export from the `nock-slider`-library, and also t
 
 ```js
 import nockSlider from 'nock-slider';
-nockSlider(sliderContaner: DOMElement, images: Array<string>, options?: Object);
+nockSlider(sliderContainer: DOMElement, images: Array<string>, options?: Object);
 ```
 
-#### Argument
+`nockSlider` is an asynchronous function and returns an "instance" of the created slider – see more on [`nockSlider`-instance](#nockSlider-instance).
 
-| Name | Required | Type | Example |
-|:-----|:---------|:-----|:--------|
-| `sliderContainer` | :heavy_check_mark: | `DOMElement` | `document.getElementById('slide')` |
-| `images` | :heavy_check_mark: | `Array` of `string` | `['img-1.jpg', 'img-2.jpg']` |
-| `options` | | `Object` (see below) | |
+#### Arguments
+
+| Name              | Required           | Type                    | Example                                                                                  |
+|:------------------|:-------------------|:------------------------|:-----------------------------------------------------------------------------------------|
+| `sliderContainer` | :heavy_check_mark: | `DOMElement`            | `document.getElementById('slideshow')`                                                   |
+| `images`          | :heavy_check_mark: | `Array` of `image urls` | `['https://www.mysite.com/assets/img-1.jpg', 'https://www.mysite.com/assets/img-2.jpg']` |
+| `options`         |                    | `Object` (see below)    | -                                                                                        |
 
 **Options:**
 
-| Name | Type | Default | Example |
-|:-----|:-----|:--------|:--------|
-| `btnPrevious` | `DOMElement` | `null` | `document.getElementById('btn-previous')` |
-| `btnNext` | `DOMElement` | `null` | `document.getElementById('btn-next')` |
-| `transitionDuration` | `number` | `0` | `500` |
-| `onSlideStart` | `function` | `null` | `src => console.log(src)` |
-| `onSlideEnd` | `function` | `null` | `src => console.log(src)` |
-| `onSlideError` | `function` | `null` | `src => console.error(src)` |
+| Name                 | Type         | Default | Example                                   |
+|:---------------------|:-------------|:--------|:------------------------------------------|
+| `btnPrevious`        | `DOMElement` | `null`  | `document.getElementById('btn-previous')` |
+| `btnNext`            | `DOMElement` | `null`  | `document.getElementById('btn-next')`     |
+| `transitionDuration` | `number`     | `0`     | `500`                                     |
+| `onSlideStart`       | `function`   | `null`  | `src => console.log(src)`                 |
+| `onSlideEnd`         | `function`   | `null`  | `src => console.log(src)`                 |
+| `onSlideError`       | `function`   | `null`  | `src => console.error(src)`               |
+
+**Events:**
+
+`onSlideStart`, `onSlideEnd` and `onSlideError` are fired, as you already might have guessed, when a slide starts, ends or errors (probably error loading an image). `onSlideStart` and `onSlideEnd` fires with the source of the image provided.
+
+If an image can't be loaded, `onSlideError` will be called with the source of the image provided. But **note** that it will also remove the image from the slider queue automatically and slide to the next or previous image in the queue.
 
 ### `nockSlider`-instance
 
-When `nockSlider` is called it returns an "instance" of the slider with som methods to control the slider. The following methods are available.
+When `nockSlider` is called it asynchronously returns an "instance" of the slider with som methods to control the slider.
 
-| Method | Description | Arguments | Returns | Example |
-|:-------|:------------|:----------|:--------|:--------|
-| `addImage` | Will add a new image to the end of the queue | `src: string` | `void` | `mySlider.addImage('/newImage.jpg')` |
-| `currentImage` | Will get the src of the current image | `-` | `string` | `const currentImage = mySlider.currentImage()` |
-| `removeImage` | Will remove the images matching the provided src string | `src: string` | `void` | `mySlider.removeImage('/newImage.jpg')` |
+```js
+// Use `await` if inside a `async` function
+const instance = await nockSlider(sliderContainer, images);
+
+// Or regular promise if you like
+nockSlider(sliderContainer, images).then(instance => console.log(instance));
+```
+
+The following methods are available the "instance".
+
+| Method         | Description                                             | Arguments     | Returns  | Example                                                    |
+|:---------------|:--------------------------------------------------------|:--------------|:---------|:-----------------------------------------------------------|
+| `addImage`     | Will add a new image to the end of the queue            | `src: string` | `void`   | `mySlider.addImage('/newImage.jpg')`                       |
+| `currentImage` | Will get the src of the current image                   |               | `string` | `const currentImage = mySlider.currentImage()`             |
+| `removeImage`  | Will remove the images matching the provided src string | `src: string` | `void`   | `mySlider.removeImage('/newImage.jpg')`                    |
+| `previous`     | Move to the previous image in queue                     |               | `void`   | `btn.addEventListener('click', () => mySlider.previous())` |
+| `next`         | Move to the next image in queue                         |               | `void`   | `btn.addEventListener('click', () => mySlider.next())`     |
+
+## Styling
+
+The `nock-slider` doesn't provide any styling at all. The only thing it does is that it takes care of loading images and and put them inside the slider. But when it does so it will provide you with three important css-classes which will aid you in the styling - `.nock-img`, `.nock-img-enter` and `.nock-img-leave`.
+
+Here follows snapshots of how the DOM looks during a transition:
+
+ 1. Before pressing any button:
+
+```html
+1. Before pressing any button
+
+<div id="slideshow">
+  <div class="nock-inner-container">
+    <img src="/current-image.jpg" class="nock-img">
+  </div>
+</div>
+```
+
+```html
+2. Button pressed (this state last for as long as you have defined `options.transitionDuration`):
+
+<div id="slideshow">
+  <div class="nock-inner-container">
+    <img src="/current-image.jpg" class="nock-img nock-img-leave">
+    <img src="/next-image.jpg" class="nock-img nock-img-enter">
+  </div>
+</div>
+```
+
+```html
+3. Transition ended
+
+<div id="slideshow">
+  <div class="nock-inner-container">
+    <img src="/next-image.jpg" class="nock-img">
+  </div>
+</div>
+```
+
+These classes provided gives you the ability to create your own transitions using css. See [examples](https://github.com/adambrgmn/simple-slider/tree/master/examples) for styling techniques.
