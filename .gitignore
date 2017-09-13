@@ -9,3 +9,6 @@ lib
 logs
 *.log
 npm-debug.log*
+
+# Workspace settings
+.vscode
