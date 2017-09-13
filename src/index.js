@@ -7,11 +7,12 @@ import memoize from './utils/memoize';
 import preloadImg from './utils/preloadImg';
 import createImageSlider from './utils/createImageSlider';
 import isProd from './utils/isProd';
+import { innerContainerClass } from './config';
 
 const loadImg = memoize(preloadImg);
 const createInnerContainer = parent => {
   const container = document.createElement('div');
-  container.classList.add('nock-inner-container');
+  container.classList.add(innerContainerClass);
   parent.appendChild(container);
   return container;
 };
