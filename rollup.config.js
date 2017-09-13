@@ -34,10 +34,18 @@ const plugins = [
   }),
   babel({
     babelrc: false,
-    presets: [
-      ['env', { modules: false, targets: { browsers: 'last 5 versions' } }],
+    presets: [['env', { modules: false, targets: { browsers: 'IE 8' } }]],
+    plugins: [
+      'external-helpers',
+      [
+        'transform-runtime',
+        {
+          helpers: false,
+          polyfill: false,
+          regenerator: true,
+        },
+      ],
     ],
-    plugins: ['external-helpers'],
   }),
 ];
 
