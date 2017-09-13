@@ -3,7 +3,17 @@
 > A very simple image slider
 
 `nock-slider` is a small image slideshow library with a very basic api. But hopefully the few methods and configurations available will make it powerfull enough.
-It's suited for simple image viewing on websitets that value a small footprint regarding javascript-size. `nock-slider` doesn't provide any form of styling at all, it just takes care of loading the enxt image before it gets placed in the DOM. But together with a few css-classes the slieshow is easily stylable.
+It's suited for simple image viewing on websitets that value a small footprint regarding javascript-size. `nock-slider` doesn't provide any form of styling at all, it just takes care of loading the next image before it gets placed in the DOM. But together with a few css-classes the slideshow is easily stylable.
+
+## Table of contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [API](#api)
+  - [`nockSlider`](#nockslider)
+  - [`nockSlider`-instance](#nockslider-instance)
+- [Styling](#styling)
+- [Browser support](#browser-support)
 
 ## Installation
 
@@ -18,7 +28,7 @@ yarn add nock-slider
 Or via `<script>`-tag:
 
 ```html
-<script src="https://unpkg.com/nock-slider/dist/nock-slider.min.js" type="text/javascript">
+<script src="https://unpkg.com/nock-slider/dist/nock-slider.min.js" type="text/javascript" />
 <!-- This sets "nockSlider" as a global variable -->
 ```
 
@@ -36,7 +46,7 @@ In `index.html`:
   <button id="slide-prev">Previous image</button>
   <button id="slide-next">Next image</button>
 
-  <script src="https://unpkg.com/nock-slider/dist/nock-slider.min.js" type="text/javascript">
+  <script src="https://unpkg.com/nock-slider/dist/nock-slider.min.js" type="text/javascript" />
   <script type="text/javascript">
     var images = ['/image-1.jpg', '/image-2.jpg', '/image-3.jpg'];
     var slideContainer = document.getElementById('slideshow');
@@ -61,7 +71,7 @@ In `index.html`:
   <button id="slide-prev">Previous image</button>
   <button id="slide-next">Next image</button>
 
-  <script src="/assets/js/app.js" type="text/javascript">
+  <script src="/assets/js/app.js" type="text/javascript" />
 </body>
 ```
 
@@ -72,7 +82,7 @@ import nockSlider from 'nock-slider';
 import api from './api'; // your own implementation
 
 async function init() {
-  const slideContainer = document.getElementById('slideContainer');
+  const slideContainer = document.getElementById('slideshow');
   const btnPrevious = document.getElementById('slide-prev');
   const btnNext = document.getElementById('slide-next');
   const images = await api.getImages();
@@ -97,9 +107,9 @@ Once a user clicks any of the buttons this will happen in sequence:
 
 1. `nockSlider` preloads the next or previous image (caching it in memory for next time) :arrow_down:
 2. The new image gets appended to the slider inner container (`.nock-inner-container`) :arrow_down:
-3. The new image gets the class `.img-enter`, the old image is still existing and gets the class `.img-leave` :arrow_down:
+3. The new image gets the class `.nock-img-enter`, the old image is still existing and gets the class `.nock-img-leave` :arrow_down:
 4. 500 ms (note `opts.transitionDuration`) later the old image gets removed from from the DOM and :arrow_down:
-5. The `.img-enter`-class gets removed from the new image :checkered_flag:
+5. The `.nock-img-enter`-class gets removed from the new image :checkered_flag:
 
 
 ## API
@@ -144,7 +154,7 @@ If an image can't be loaded, `onSlideError` will be called with the source of th
 
 ### `nockSlider`-instance
 
-When `nockSlider` is called it asynchronously returns an "instance" of the slider with som methods to control the slider.
+When `nockSlider` is called it asynchronously returns an "instance" of the slider with some methods to control the slider.
 
 ```js
 // Use `await` if inside a `async` function
@@ -154,7 +164,7 @@ const instance = await nockSlider(sliderContainer, images);
 nockSlider(sliderContainer, images).then(instance => console.log(instance));
 ```
 
-The following methods are available the "instance".
+The following methods are available on the "instance".
 
 | Method         | Description                                             | Arguments     | Returns  | Example                                                    |
 |:---------------|:--------------------------------------------------------|:--------------|:---------|:-----------------------------------------------------------|
@@ -169,8 +179,6 @@ The following methods are available the "instance".
 The `nock-slider` doesn't provide any styling at all. The only thing it does is that it takes care of loading images and and put them inside the slider. But when it does so it will provide you with three important css-classes which will aid you in the styling - `.nock-img`, `.nock-img-enter` and `.nock-img-leave`.
 
 Here follows snapshots of how the DOM looks during a transition:
-
- 1. Before pressing any button:
 
 ```html
 1. Before pressing any button
@@ -204,3 +212,11 @@ Here follows snapshots of how the DOM looks during a transition:
 ```
 
 These classes provided gives you the ability to create your own transitions using css. See [examples](https://github.com/adambrgmn/simple-slider/tree/master/examples) for styling techniques.
+
+## Browser support
+
+The javascript code of `nock-slider` is compiled using Babel. And it's set to support the last five versions of the major browsers out in the wild.
+
+## License
+
+MIT © [Adam Bergman](https://github.com/adambrgmn)
