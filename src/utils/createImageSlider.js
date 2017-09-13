@@ -1,38 +1,50 @@
 import filter from 'ramda/src/filter';
+import forEach from 'ramda/src/forEach';
 import rafScheduler from 'raf-schd';
 import delay from './delay';
 import { imgClass } from '../config';
+import {
+  createElement,
+  setAttribute,
+  addClass,
+  appendChild,
+  removeClass,
+  removeElement,
+} from './dom';
 
 function createImageSlider(parent, transitionDelay = 0) {
   return async blobUrl => {
     const existingImg = parent.firstChild;
     const children = Array.from(parent.children);
-    const nextImg = document.createElement('img');
-    nextImg.classList.add(imgClass);
-    nextImg.setAttribute('src', blobUrl);
+    const nextImg = createElement('img', [imgClass]);
+    setAttribute(nextImg, 'src', blobUrl);
 
     if (transitionDelay === 0 && existingImg) existingImg.replaceWith(nextImg);
 
     const enterImages = rafScheduler(() => {
-      children.forEach(child => {
-        child.classList.remove(`${imgClass}-enter`);
-        child.classList.add(`${imgClass}-leave`);
-      });
+      forEach(child => {
+        removeClass(child, `${imgClass}-enter`);
+        addClass(child, `${imgClass}-leave`);
+      }, children);
 
-      nextImg.classList.add(`${imgClass}-enter`);
-      parent.appendChild(nextImg);
+      addClass(nextImg, `${imgClass}-enter`);
+      appendChild(parent, nextImg);
     });
 
     const leaveImages = rafScheduler(() => {
-      children.forEach(child => {
-        child.classList.remove(`${imgClass}-leave`);
-        child.remove();
-      });
-      nextImg.classList.remove(`${imgClass}-enter`);
+      forEach(child => {
+        removeClass(child, `${imgClass}-leave`);
+        removeElement(child);
+      }, children);
+
+      removeClass(nextImg, `${imgClass}-enter`);
     });
 
     enterImages();
-    return delay(leaveImages, transitionDelay);
+    return delay(() => {
+      leaveImages();
+      return nextImg;
+    }, transitionDelay);
   };
 }
 

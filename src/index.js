@@ -7,13 +7,13 @@ import memoize from './utils/memoize';
 import preloadImg from './utils/preloadImg';
 import createImageSlider from './utils/createImageSlider';
 import isProd from './utils/isProd';
+import { createElement, appendChild } from './utils/dom';
 import { innerContainerClass } from './config';
 
 const loadImg = memoize(preloadImg);
 const createInnerContainer = parent => {
-  const container = document.createElement('div');
-  container.classList.add(innerContainerClass);
-  parent.appendChild(container);
+  const container = createElement('div', [innerContainerClass]);
+  appendChild(parent, container);
   return container;
 };
 
