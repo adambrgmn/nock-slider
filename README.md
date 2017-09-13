@@ -28,7 +28,7 @@ yarn add nock-slider
 Or via `<script>`-tag:
 
 ```html
-<script src="https://unpkg.com/nock-slider/dist/nock-slider.min.js" type="text/javascript" />
+<script src="https://unpkg.com/nock-slider/dist/nock-slider.min.js" type="text/javascript"></script>
 <!-- This sets "nockSlider" as a global variable -->
 ```
 
@@ -46,7 +46,7 @@ In `index.html`:
   <button id="slide-prev">Previous image</button>
   <button id="slide-next">Next image</button>
 
-  <script src="https://unpkg.com/nock-slider/dist/nock-slider.min.js" type="text/javascript" />
+  <script src="https://unpkg.com/nock-slider/dist/nock-slider.min.js" type="text/javascript"></script>
   <script type="text/javascript">
     var images = ['/image-1.jpg', '/image-2.jpg', '/image-3.jpg'];
     var slideContainer = document.getElementById('slideshow');
@@ -71,7 +71,7 @@ In `index.html`:
   <button id="slide-prev">Previous image</button>
   <button id="slide-next">Next image</button>
 
-  <script src="/assets/js/app.js" type="text/javascript" />
+  <script src="/assets/js/app.js" type="text/javascript"></script>
 </body>
 ```
 
