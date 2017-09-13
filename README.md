@@ -218,7 +218,7 @@ These classes provided gives you the ability to create your own transitions usin
 
 ## Browser support
 
-The javascript code of `nock-slider` is compiled using Babel. And it's set to support the last five versions of the major browsers out in the wild.
+The javascript code of `nock-slider` is compiled using Babel. And it's set to support browsers down to IE8 – but note that I have not performed any tests on this.
 
 ## License
 
