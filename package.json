@@ -8,6 +8,11 @@
   "main": "lib/index.js",
   "jsnext:main": "dist/simple-slider.es.js",
   "module": "dist/simple-slider.es.js",
+  "files": ["dist", "lib", "src"],
+  "keywords": ["slideshow", "es6"],
+  "bugs": {
+    "url": "https://github.com/adambrgmn/nock-slider/issues"
+  },
   "scripts": {
     "prebuild": "rimraf dist/* && rimraf lib/*",
     "build": "npm run build:dist && npm run build:lib",
