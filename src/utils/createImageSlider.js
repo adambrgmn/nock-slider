@@ -1,6 +1,5 @@
-import filter from 'ramda/src/filter';
-import forEach from 'ramda/src/forEach';
 import rafScheduler from 'raf-schd';
+import { filter, forEach } from './fp';
 import delay from './delay';
 import { imgClass } from '../config';
 import {

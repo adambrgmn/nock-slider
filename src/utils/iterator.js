@@ -1,9 +1,4 @@
-import head from 'ramda/src/head';
-import tail from 'ramda/src/tail';
-import last from 'ramda/src/last';
-import init from 'ramda/src/init';
-import append from 'ramda/src/append';
-import filter from 'ramda/src/filter';
+import { head, tail, last, init, filter, isNil } from './fp';
 
 function createIterator(arr) {
   let array = arr;
@@ -13,7 +8,7 @@ function createIterator(arr) {
     next() {
       const headEl = head(array);
       const restEl = tail(array);
-      array = current ? [...restEl, current] : restEl;
+      array = !isNil(current) ? [...restEl, current] : restEl;
       current = headEl;
       return headEl;
     },
@@ -31,7 +26,7 @@ function createIterator(arr) {
       return current;
     },
     add(el) {
-      array = append(el, array);
+      array = [...array, el];
     },
     remove(el) {
       array = filter(e => e !== el, array);

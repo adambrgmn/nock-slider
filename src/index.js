@@ -1,11 +1,8 @@
-import pipeP from 'ramda/src/pipeP';
-import pipe from 'ramda/src/pipe';
-import isNil from 'ramda/src/isNil';
+import { pipeP } from './utils/fp';
 import createIterator from './utils/iterator';
 import memoize from './utils/memoize';
 import preloadImg from './utils/preloadImg';
 import createImageSlider from './utils/createImageSlider';
-import isProd from './utils/isProd';
 import callIfFunction from './utils/callIfFunction';
 import { createElement, appendChild, addClass, removeClass } from './utils/dom';
 import { innerContainerClass, baseName } from './config';
