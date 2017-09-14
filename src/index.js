@@ -49,7 +49,7 @@ async function nockSlider(
     src => {
       callIfFunction(onSlideStart, src);
       containerState.isLoading();
-      return Promise.resolve(src);
+      return src;
     },
     loadImg,
     blob => {
