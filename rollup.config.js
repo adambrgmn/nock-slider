@@ -8,16 +8,29 @@ import pkg from './package.json';
 const isProd = process.env.BUNDLE_PROD;
 const isEsbundle = process.env.BUNDLE_ES;
 
-const name = 'SimpleSlider';
+const name = 'nockSlider';
 let output;
 
 if (isProd) {
   console.log('Creating production UMD bundle...');
-  output = { file: 'dist/simple-slider.min.js', format: 'umd', name };
+  output = { file: `dist/${pkg.name}.min.js`, format: 'umd', name };
 } else if (isEsbundle) {
   console.log('Creating ES modules bundle...');
-  output = { file: 'dist/simple-slider.es.js', format: 'es', name };
+  output = { file: `dist/${pkg.name}.es.js`, format: 'es', name };
+} else {
+  console.log('Creating development UMD bundle...');
+  output = { file: `dist/${pkg.name}.js`, format: 'umd', name };
 }
+
+const browsers = isProd
+  ? ['> 1%', 'last 2 versions', 'Firefox ESR']
+  : [
+      'Chrome >= 60',
+      'Safari >= 10.1',
+      'iOS >= 10.3',
+      'Firefox >= 54',
+      'Edge >= 15',
+    ];
 
 const plugins = [
   commonjs({
@@ -31,16 +44,18 @@ const plugins = [
   }),
   babel({
     babelrc: false,
-    presets: [
+    presets: [['env', { modules: false, targets: { browsers } }]],
+    plugins: [
+      'external-helpers',
       [
-        'env',
+        'transform-runtime',
         {
-          modules: false,
-          targets: { browsers: isProd ? 'last 2 versions' : 'defaults' },
+          helpers: false,
+          polyfill: false,
+          regenerator: true,
         },
       ],
     ],
-    plugins: ['external-helpers'],
   }),
 ];
 

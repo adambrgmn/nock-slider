@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Simple Slider</title>
+
+    <link rel="stylesheet" href="/css/base.css">
+  </head>
+  <body>
+    <h1 class="title">Nock Slider</h1>
+    <div class="description">
+      <p>This is the most basic setup required to get <code>nockSlider</code> to work.</p>
+      <ul>
+        <li><a href="/">Basic</a></li>
+        <li><a href="/with-custom-buttons.html">With custom buttons</a></li>
+        <li><a href="/with-key-events.html">With key events</a></li>
+      </ul>
+    </div>
+
+    <div class="container">
+      <button type="button" class="btn btn-previous">&lt;</button>
+      <button type="button" class="btn btn-next">&gt;</button>
+      <div class="slideshow nock-loading">
+        <div class="loader"><span class="loader-inner"></span></div>
+      </div>
+    </div>
+
+    <script src="/nock-slider.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      const images = [
+        'https://images.unsplash.com/uploads/14126758789351371c7ec/aa322c2d?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&s=36498af11150e1b51615ecd166277e0b',
+        'https://images.unsplash.com/photo-1477511865400-09143de8796e?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&s=7c1d0088d2ba8480d6ecc22878b8acef',
+        'https://images.unsplash.com/photo-1499875534998-ee456c5e5b0e?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&s=1a46bc98b43a336a33a2cb29341750c0',
+        'https://images.unsplash.com/photo-1500265170352-2ce1da4bab7d?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&s=2c27ff0914ca3e79823f9b1158e35a5a',
+        'https://images.unsplash.com/photo-1440744147460-3236ece72dcb?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&s=34a53965416d87b86c80973eeb2bc35d',
+      ];
+      
+      const slide = document.querySelector('.slideshow');
+      const options = {
+        btnPrevious: document.querySelector('.btn-previous'),
+        btnNext: document.querySelector('.btn-next'),
+        transitionDuration: 500,
+      };
+      
+      nockSlider(slide, images, options);
+    </script>
+  </body>
+</html>
