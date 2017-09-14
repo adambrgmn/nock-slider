@@ -129,11 +129,11 @@ nockSlider(sliderContainer: DOMElement, images: Array<string>, options?: Object)
 
 #### Arguments
 
-| Name              | Required           | Type                    | Example                                      |
-|:------------------|:------------------:|:------------------------|:---------------------------------------------|
-| `sliderContainer` | :heavy_check_mark: | `DOMElement`            | `document.getElementById('slideshow')`       |
-| `images`          | :heavy_check_mark: | `Array` of `image urls` | `['/assets/img-1.jpg', '/assets/img-2.jpg']` |
-| `options`         |                    | `Object` (see below)    | -                                            |
+| Name              | Required           | Type         | Example                                      |
+|:------------------|:------------------:|:-------------|:---------------------------------------------|
+| `sliderContainer` | :heavy_check_mark: | `DOMElement` | `document.getElementById('slideshow')`       |
+| `images`          | :heavy_check_mark: | `[string]`   | `['/assets/img-1.jpg', '/assets/img-2.jpg']` |
+| `options`         |                    | `Object`     | -                                            |
 
 **Options:**
 
@@ -143,7 +143,7 @@ nockSlider(sliderContainer: DOMElement, images: Array<string>, options?: Object)
 | `btnNext`            | `DOMElement` | `null`  | `document.getElementById('btn-next')`     |
 | `transitionDuration` | `number`     | `0`     | `500`                                     |
 | `onSlideStart`       | `function`   | `null`  | `src => console.log(src)`                 |
-| `onSlideEnd`         | `function`   | `null`  | `src => console.log(src)`                 |
+| `onSlideEnd`         | `function`   | `null`  | `imgEl => console.log(imgEl)`             |
 | `onSlideError`       | `function`   | `null`  | `src => console.error(src)`               |
 
 **Events:**
@@ -168,18 +168,18 @@ nockSlider(sliderContainer, images).then(instance => console.log(instance));
 
 The following methods are available on the "instance".
 
-| Method         | Description                                  | Arguments     | Returns   | Example                                                    |
-|:---------------|:---------------------------------------------|:--------------|:----------|:-----------------------------------------------------------|
-| `addImage`     | Will add a new image to the end of the queue | `src: string` | `void`    | `mySlider.addImage('/newImage.jpg')`                       |
-| `removeImage`  | Will remove the images matching the src      | `src: string` | `void`    | `mySlider.removeImage('/newImage.jpg')`                    |
-| `currentImage` | Will get the src of the current image        |               | `string`  | `const currentImage = mySlider.currentImage()`             |
-| `allImages`    | Will return all the srcs of images in queue  |               | `[strin]` | `const allImgs = mySlide.allImages()`                      |
-| `previous`     | Move to the previous image in queue          |               | `void`    | `btn.addEventListener('click', () => mySlider.previous())` |
-| `next`         | Move to the next image in queue              |               | `void`    | `btn.addEventListener('click', () => mySlider.next())`     |
+| Method         | Description                                  | Arguments     | Returns    | Example                                                    |
+|:---------------|:---------------------------------------------|:--------------|:-----------|:-----------------------------------------------------------|
+| `addImage`     | Will add a new image to the end of the queue | `src: string` | `void`     | `mySlider.addImage('/newImage.jpg')`                       |
+| `removeImage`  | Will remove the images matching the src      | `src: string` | `void`     | `mySlider.removeImage('/newImage.jpg')`                    |
+| `currentImage` | Will get the src of the current image        |               | `string`   | `const currentImage = mySlider.currentImage()`             |
+| `allImages`    | Will return all the srcs of images in queue  |               | `[string]` | `const allImgs = mySlide.allImages()`                      |
+| `previous`     | Move to the previous image in queue          |               | `void`     | `btn.addEventListener('click', () => mySlider.previous())` |
+| `next`         | Move to the next image in queue              |               | `void`     | `btn.addEventListener('click', () => mySlider.next())`     |
 
 ## Styling
 
-The `nock-slider` doesn't provide any styling at all. The only thing it does is that it takes care of loading images and and put them inside the slider. But when it does so it will provide you with three important css-classes which will aid you in the styling - `.nock-img`, `.nock-img-enter` and `.nock-img-leave`.
+The `nock-slider` doesn't provide any styling at all. The only thing it does is that it takes care of loading images and and put them inside the slider. But when it does so it will provide you with four important css-classes which will aid you in the styling - `.nock-img`, `.nock-img-enter`, `.nock-img-leave` and `.nock-loading`.
 
 Here follows snapshots of how the DOM looks during a transition:
 
@@ -194,7 +194,17 @@ Here follows snapshots of how the DOM looks during a transition:
 ```
 
 ```html
-2. Button pressed (this state last for as long as you have defined options.transitionDuration):
+2. While image is being loaded in (note class on #slideshow)
+
+<div id="slideshow" class="nock-loading">
+  <div class="nock-inner-container">
+    <img src="/current-image.jpg" class="nock-img">
+  </div>
+</div>
+```
+
+```html
+3. Button pressed (this state last for as long as you have defined options.transitionDuration):
 
 <div id="slideshow">
   <div class="nock-inner-container">
@@ -205,7 +215,7 @@ Here follows snapshots of how the DOM looks during a transition:
 ```
 
 ```html
-3. Transition ended
+4. Transition ended
 
 <div id="slideshow">
   <div class="nock-inner-container">

@@ -1,12 +1,12 @@
 import pipeP from 'ramda/src/pipeP';
 import pipe from 'ramda/src/pipe';
 import isNil from 'ramda/src/isNil';
-import isFunction from './utils/isFunction';
 import createIterator from './utils/iterator';
 import memoize from './utils/memoize';
 import preloadImg from './utils/preloadImg';
 import createImageSlider from './utils/createImageSlider';
 import isProd from './utils/isProd';
+import callIfFunction from './utils/callIfFunction';
 import { createElement, appendChild, addClass, removeClass } from './utils/dom';
 import { innerContainerClass, baseName } from './config';
 
@@ -47,12 +47,20 @@ async function nockSlider(
   const containerState = createContainerState(slideContainer);
   const slideTo = createImageSlider(innerContainer, transitionDuration);
   const images = createIterator(imgs);
+
   const loadAndSlide = pipeP(
-    (...args) => Promise.resolve(...args),
-    containerState.isLoading,
+    src => {
+      callIfFunction(onSlideStart, src);
+      containerState.isLoading();
+      return Promise.resolve(src);
+    },
     loadImg,
-    containerState.isNotLoading,
+    blob => {
+      containerState.isNotLoading();
+      return blob;
+    },
     slideTo,
+    imgEl => callIfFunction(onSlideEnd, imgEl),
   );
 
   const initialImageSrc = images.next();
@@ -63,11 +71,9 @@ async function nockSlider(
     const nextImageSrc = images[event]();
 
     try {
-      if (isFunction(onSlideStart)) onSlideStart(nextImageSrc);
-      const nextImgEl = await loadAndSlide(nextImageSrc);
-      if (isFunction(onSlideEnd)) onSlideEnd(nextImgEl);
+      await loadAndSlide(nextImageSrc);
     } catch (error) {
-      if (isFunction(onSlideError)) onSlideError(error);
+      callIfFunction(onSlideError, error);
       containerState.isNotLoading();
 
       images.remove(nextImageSrc);
