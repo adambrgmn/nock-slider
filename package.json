@@ -12,7 +12,7 @@
     "prebuild": "rimraf dist/* && rimraf lib/*",
     "build": "npm run build:dist && npm run build:lib",
     "build:dist":
-      "rollup -c --environment BUNDLE_ES && rollup -c --environment BUNDLE_PROD",
+      "rollup -c --environment BUNDLE_ES && rollup -c --environment BUNDLE_PROD && rollup -c",
     "build:lib": "babel --out-dir lib --ignore \"*.test.js\" src",
     "build:watch": "rollup -c --watch",
     "dev": "node examples/server.js",
