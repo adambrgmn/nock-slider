@@ -1,6 +1,6 @@
 {
   "name": "nock-slider",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A simple image slider library",
   "repository": "git@github.com:adambrgmn/nock-slider.git",
   "author": "Adam Bergman <adam@fransvilhelm.com>",
@@ -8,6 +8,11 @@
   "main": "lib/index.js",
   "jsnext:main": "dist/simple-slider.es.js",
   "module": "dist/simple-slider.es.js",
+  "files": ["dist", "lib", "src"],
+  "keywords": ["slideshow", "es6"],
+  "bugs": {
+    "url": "https://github.com/adambrgmn/nock-slider/issues"
+  },
   "scripts": {
     "prebuild": "rimraf dist/* && rimraf lib/*",
     "build": "npm run build:dist && npm run build:lib",
