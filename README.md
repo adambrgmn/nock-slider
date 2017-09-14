@@ -228,7 +228,9 @@ These classes provided gives you the ability to create your own transitions usin
 
 ## Browser support
 
-The javascript code of `nock-slider` is compiled using Babel. And it's set to support browsers down to IE8 – but note that I have not performed any tests on this.
+My recommendation is that you create your own javascript build pipeline using e.g. Webpack or Rollup. And `import nockSlider from 'nock-slider'` and do all instatiation in there. In that way you can make your own decisions regarding which browsers you would like to support when you compile your javascript.
+
+But if you like you could import nockSlider using `<script src="path/to/nock-slider.min.js"></script>`. It compiled using Babel and set to support all browsers with at least 1% usage global, last two versions and Firefox ESR. This gives that bundle fairly good browser support.
 
 ## License
 
