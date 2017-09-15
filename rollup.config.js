@@ -22,16 +22,6 @@ if (isProd) {
   output = { file: `dist/${pkg.name}.js`, format: 'umd', name };
 }
 
-const browsers = isProd
-  ? ['> 1%', 'last 2 versions', 'Firefox ESR']
-  : [
-      'Chrome >= 60',
-      'Safari >= 10.1',
-      'iOS >= 10.3',
-      'Firefox >= 54',
-      'Edge >= 15',
-    ];
-
 const plugins = [
   commonjs({
     ignoreGlobal: true,
@@ -44,18 +34,16 @@ const plugins = [
   }),
   babel({
     babelrc: false,
-    presets: [['env', { modules: false, targets: { browsers } }]],
-    plugins: [
-      'external-helpers',
+    presets: [
       [
-        'transform-runtime',
+        'env',
         {
-          helpers: false,
-          polyfill: false,
-          regenerator: true,
+          modules: false,
+          targets: { browsers: ['> 1%', 'last 2 versions', 'Firefox ESR'] },
         },
       ],
     ],
+    plugins: ['external-helpers'],
   }),
 ];
 

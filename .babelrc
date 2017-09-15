@@ -1,4 +1,9 @@
 {
-  "presets": [["env", { "targets": { "node": "8" } }]],
+  "presets": [
+    [
+      "env",
+      { "targets": { "browsers": ["> 1%", "last 2 versions", "Firefox ESR"] } }
+    ]
+  ],
   "plugins": ["add-module-exports"]
 }

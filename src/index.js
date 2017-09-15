@@ -28,7 +28,7 @@ const createContainerState = container => {
   };
 };
 
-async function nockSlider(
+function nockSlider(
   slideContainer,
   imgs = [],
   {
@@ -61,21 +61,19 @@ async function nockSlider(
   );
 
   const initialImageSrc = images.next();
-  await loadAndSlide(initialImageSrc);
+  loadAndSlide(initialImageSrc);
 
-  const transition = next => async () => {
+  const transition = next => () => {
     const event = next ? 'next' : 'prev';
     const nextImageSrc = images[event]();
 
-    try {
-      await loadAndSlide(nextImageSrc);
-    } catch (error) {
-      callIfFunction(onSlideError, error);
+    loadAndSlide(nextImageSrc).catch(err => {
+      callIfFunction(onSlideError, err);
       containerState.isNotLoading();
 
       images.remove(nextImageSrc);
-      await transition(next)();
-    }
+      transition(next)();
+    });
   };
 
   btnPrevious && btnPrevious.addEventListener('click', transition(false));
