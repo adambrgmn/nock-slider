@@ -5,19 +5,20 @@ function memoize(fn) {
   const getFromCache = p => prop(p, cache);
   const setInCache = (p, val) => assoc(p, val, cache);
 
-  return async (...args) => {
+  return (...args) => {
     let argsString = JSON.stringify(args);
     const resultFromCache = getFromCache(argsString);
 
     if (isNil(resultFromCache)) {
       !isProd() && console.log('Not found in cache');
-      const result = await fn(...args);
-      cache = setInCache(argsString, result);
-      return result;
+      return fn(...args).then(result => {
+        cache = setInCache(argsString, result);
+        return result;
+      });
     }
 
     !isProd() && console.log('Found in cache');
-    return resultFromCache;
+    return Promise.resolve(resultFromCache);
   };
 }
 
