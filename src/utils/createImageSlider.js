@@ -12,7 +12,7 @@ import {
 } from './dom';
 
 function createImageSlider(parent, transitionDelay = 0) {
-  return async blobUrl => {
+  return blobUrl => {
     const existingImg = parent.firstChild;
     const children = Array.from(parent.children);
     const nextImg = createElement('img', [imgClass]);
